@@ -1,0 +1,14 @@
+version: '2'
+services:
+  web:
+    build: ./target/docker
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:9.5
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db-schema.sql:/docker-entrypoint-initdb.d/schema.sql

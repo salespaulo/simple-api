@@ -18,8 +18,8 @@ object Schema {
       _.entity("users")
         .generated(_.id)
         .columns(
-          _.id    -> "id",
-          _.login -> "username"))
+          _.login    -> "email",
+          _.password -> "senha"))
   }
 
   val followersdb = quote {
