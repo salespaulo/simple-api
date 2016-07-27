@@ -1,6 +1,17 @@
 *.class
 *.log
 
+#idea
+.idea/
+*.iml
+.*.swp
+
+# eclipse
+.classpath
+.project
+.settings/
+bin/
+
 # sbt specific
 .cache
 .history
