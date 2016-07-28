@@ -4,29 +4,20 @@ import simple.api.infra.orm.Schema._
 
 import scala.util.Try
 
-case class User(id: Long, login: String, password: String, age: Int)
+case class User(id: Long, email: String, password: String, age: Int)
 
 case class UserFollower(userId: Long, followerId: Long)
 
-trait Auth {
+trait Following {
   import ctx._
 
-  val authorize = quote { (login: String, password: String) =>
-    usersdb.filter(u => u.login == login && u.password == password).take(1)
+  def insertFollower(userId: Long, followerId: Long) = for {
+    u <- User.get(userId)
+    f <- User.get(followerId)
+    _ <- Try(run(followersdb.insert)(List(UserFollower(userId, followerId)))).toOption
+  } yield {
+    (u, f)
   }
-
-}
-
-object User extends Auth {
-  import ctx._
-
-  def list: Seq[User] = run(usersdb.sortBy(_.login))
-
-  def get(id: Long): Option[User] = run(usersdb.filter(_.id == lift(id))).headOption
-
-  def update(user: User): Option[Long] = run(usersdb.filter(_.id == lift(user.id)).update)(List(user)).headOption
-
-  def insert(user: User): Option[Long] = run(usersdb.insert)(List(user)).headOption
 
   def followers(userId: Long): Seq[User] = run(quote {
     for {
@@ -36,6 +27,18 @@ object User extends Auth {
     }
   })
 
-  def delete(id: Long): Try[Long] = Try(run(usersdb.filter(_.id == lift(id)).delete))
+}
 
+object User extends Following {
+  import ctx._
+
+  def list: Seq[User] = run(usersdb.sortBy(_.email))
+
+  def get(id: Long): Option[User] = run(usersdb.filter(_.id == lift(id))).headOption
+
+  def update(user: User): Option[Long] = run(usersdb.filter(_.id == lift(user.id)).update)(List(user)).headOption
+
+  def insert(user: User): Option[Long] = run(usersdb.insert)(List(user)).headOption
+
+  def delete(id: Long): Try[Long] = Try(run(usersdb.filter(_.id == lift(id)).delete))
 }

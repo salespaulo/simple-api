@@ -16,15 +16,15 @@ object Schema {
   val usersdb = quote {
     query[User].schema(
       _.entity("users")
-        .generated(_.id)
-        .columns(
-          _.login    -> "email",
-          _.password -> "senha"))
+        .generated(_.id))
   }
 
   val followersdb = quote {
     query[UserFollower].schema(
-      _.entity("followers")
+      _.entity("user_followers")
+        .columns(
+          _.userId -> "user_id",
+          _.followerId -> "follower_user_id")
     )
   }
 
