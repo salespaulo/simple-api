@@ -1,7 +1,7 @@
 # simple-api
 A simple Api in Scala using Finch and Quill :-]
 
-## Clone it and enjoy :D
+## Enjoy :D
 ```
 $> git clone https://github.com/salespaulo/simple-api.git
 $> cd simmple-api
