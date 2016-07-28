@@ -21,7 +21,7 @@ trait Following {
 
   def followers(userId: Long): Seq[User] = run(quote {
     for {
-      userAndFollowers <- usersdb.join(followersdb).on((u, f) => u.id == f.userId).filter(_._1.id == lift(userId))
+      userAndFollowers <- usersdb.join(followersdb).on((u, f) => u.id == f.followerId).filter(_._2.userId == lift(userId))
     } yield {
       userAndFollowers._1
     }
