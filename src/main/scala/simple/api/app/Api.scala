@@ -1,7 +1,7 @@
 package simple.api.app
 
 import com.twitter.finagle.Http
-import com.twitter.util.{Base64StringEncoder, Await}
+import com.twitter.util.Await
 import io.circe.generic.auto._
 import io.finch._
 import io.finch.circe._
